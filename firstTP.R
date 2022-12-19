@@ -15,17 +15,11 @@ remDr$open()
 # logr
 log_open("logtp.txt")
 
-#
-handleError <- function(e) {
-  log_print(e)
-}
-
 #Laver funktioner der der fungerer som 'cleaning' funktioner
 ##Trimmer en string for at fjerne "white space"
 trim <- function(str) {
   gsub("^\\s+|\\s+$", "", str)
 }
-
 
 
 ##Laver alle factor kolonnerne til character
@@ -67,13 +61,12 @@ cat(paste0("The script will run on ", ceiling(totalReviews / 20), " pages!\n"))
 limit= ceiling(xtotalReviews / 20)
 Sys.sleep(2)
 
-xreviews=reviews
 # dataframen til mine reviews
 reviews = data.frame()
 
-#Der laves et loop som går gennem alle siderne
 remDr$open()
 
+#Der laves et loop som går gennem alle siderne
 for (i in (10:limit)) {
   #påbegynder scraping
   tmpurl=paste0(url,"?page=",i)
@@ -180,10 +173,6 @@ for (i in (10:limit)) {
   #print(paste0(url, "&page=", i, " has been scraped"))
 }
 
-reviews <- factorToCharacter(reviews)
-reviews$contentLength <- nchar(reviews$content)
-
-
-
-eurodan <- trustpilot("eurodan-huse.dk")
-glimpse(eurodan)
+xreviews <- factorToCharacter(reviews)
+xreviews$contentLength <- nchar(reviews$content)
+saveRDS(xreviews,"tpreviews.rds")
