@@ -67,7 +67,7 @@ reviews = data.frame()
 remDr$open()
 
 #Der laves et loop som går gennem alle siderne
-for (i in (10:limit)) {
+for (i in (1:limit)) {
   #påbegynder scraping
   tmpurl=paste0(url,"?page=",i)
   log_print(tmpurl)
