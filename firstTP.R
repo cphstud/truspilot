@@ -9,8 +9,8 @@ library("purrr")
 
 
 # selenium running in Docker
-remDr <- RSelenium::remoteDriver(remoteServerAddr = "localhost",port=4445)
-remDr$open()
+#remDr <- RSelenium::remoteDriver(remoteServerAddr = "localhost",port=4445)
+#remDr$open()
 
 # logr
 log_open("logtp.txt")
@@ -38,11 +38,6 @@ domain="eurodan-huse.dk"
 # https://dk.trustpilot.com/review/www.eurodan-huse.dk?page=2
 url <- paste0("https://dk.trustpilot.com/review/", domain)
 
-remDr$navigate(url)
-tmpsource <- remDr$getPageSource()
-trusthtml <- read_html(tmpsource[[1]])
-
-
 #Vi definerer url'en som skal analyseres.
 #For at se hvor mange sider af reviews der skal gennemgås, må vi først finde antallet at reviews
 
@@ -57,25 +52,25 @@ xtotalReviews <- as.numeric(gsub("[^0-9]", "", totalReviews))
 
 #Her bliver printet ud hvor mange sider der er
 cat("\014")
-cat(paste0("The script will run on ", ceiling(totalReviews / 20), " pages!\n"))
+#cat(paste0("The script will run on ", ceiling(totalReviews / 20), " pages!\n"))
 limit= ceiling(xtotalReviews / 20)
 Sys.sleep(2)
 
 # dataframen til mine reviews
 reviews = data.frame()
 
-remDr$open()
+#remDr$open()
 
 #Der laves et loop som går gennem alle siderne
-for (i in (1:limit)) {
+for (i in (1:3)) {
   #påbegynder scraping
   tmpurl=paste0(url,"?page=",i)
   log_print(tmpurl)
-  remDr$navigate(tmpurl)
-  Sys.sleep(8)
-  tmpsource <- remDr$getPageSource()
+  #
+  #remDr$navigate(tmpurl)
+  #tmpsource <- remDr$getPageSource()
+  page <- read_html(tmpurl) 
   Sys.sleep(4)
-  page <- read_html(tmpsource[[1]])
   
   review_card <- page %>%
     html_nodes(".styles_reviewCard__hcAvl")
